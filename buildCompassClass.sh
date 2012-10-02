@@ -15,10 +15,10 @@ mv "$sassyExtPath"/stylesheets .
 echo "Building compass functions class ..."
 classFilename="$className".class.php
 
-echo "class $className {" > "$classFilename"
+echo -e "<?php\nclass $className {" > "$classFilename"
 cat "$sassyExtPath"/sassy_compass.module | grep -v "^<?php" | grep -v "require_once" >> "$classFilename"
-find "$sassyExtPath"/functions/ -name "*.inc" -exec cat "{}" \; | grep -v "^<\?php" | grep -v "require_once" >> "$classFilename"
-echo "}" > "$classFilename"
+find "$sassyExtPath"/functions/ -name "*.inc" -exec cat "{}" \; | grep -v "^<?php" | grep -v "require_once" >> "$classFilename"
+echo "}" >> "$classFilename"
 
 echo "Cleanup ..."
 rm -rf sassy

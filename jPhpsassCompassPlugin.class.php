@@ -21,7 +21,15 @@ class jPhpsassCompassPlugin implements IjPhpsassPlugin {
      * returns an array of functions handled by the plugin : array('functionName' => array($class, 'method'))
      */
     public function getPhpsassFunctions( ) {
-        return sassy_compass_sassy_functions();
+        require_once('compassFunctions.class.php');
+        $compassFunctionsInst = new compassFunctions();
+
+        $compassFunctions = array();
+        foreach( sassy_compass_sassy_functions() as $compassFunction => $compassFunctionInfos ) {
+            $compassFunctions[$compassFunction] = array( 'name'=>$compassFunctionInfos['name'],
+                                                         'callback'=>array($compassFunctionsInst, $compassFunctionInfos['callback']) );
+        }
+        return $compassFunctions;
     }
 
     /**
