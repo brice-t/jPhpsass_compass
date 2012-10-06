@@ -12,7 +12,7 @@
 /**
  * interface for plugins for jPhpsass plugin
  */
-class jPhpsassCompassPlugin implements IjPhpsassPlugin {
+class jPhpsassPlugin_compass implements IjPhpsassPlugin {
 
     public function __construct(jPhpsassCSSpreproPlugin $jPhpsassInstance) {
     }
