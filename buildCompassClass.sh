@@ -17,8 +17,11 @@ classFilename="$className".class.php
 
 echo -e "<?php\nclass $className {" > "$classFilename"
 cat "$sassyExtPath"/sassy_compass.module | grep -v "^<?php" | grep -v "require_once" >> "$classFilename"
-find "$sassyExtPath"/functions/ -name "*.inc" -exec cat "{}" \; | grep -v "^<?php" | grep -v "require_once" >> "$classFilename"
+find "$sassyExtPath"/functions/ -name "*.inc" -exec grep -v "^<?php" "{}" \; | grep -v "require_once" >> "$classFilename"
 echo "}" >> "$classFilename"
+
+cat "$classFilename" | perl -pe 's/(?<!function) sassy_compass__/ \$this->sassy_compass__/g' > "$classFilename".tmp
+mv "$classFilename".tmp "$classFilename"
 
 echo "Cleanup ..."
 rm -rf sassy

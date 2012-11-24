@@ -188,7 +188,7 @@ function sassy_compass___compass_nth() {
 	$place = array_pop($args);
 	$list = array();
 	foreach ($args as $arg) {
-		$list = array_merge($list, sassy_compass__list($arg));
+		$list = array_merge($list, $this->sassy_compass__list($arg));
 	}
 
 	if ($place == 'first') {
@@ -208,20 +208,20 @@ function sassy_compass___compass_list() {
 	$args = func_get_args();
 	$list = array();
 	foreach ($args as $arg) {
-		$list = array_merge($list, sassy_compass__list($arg));
+		$list = array_merge($list, $this->sassy_compass__list($arg));
 	}
 	return new SassString(implode(', ', $list));
 }
 
 function sassy_compass___compass_space_list() {
 	$args = func_get_args();
-	$list = sassy_compass__list($args, ',');
+	$list = $this->sassy_compass__list($args, ',');
 	return new SassString(implode(' ', $list));
 }
 
 function sassy_compass___compass_list_size() {
 	$args = func_get_args();
-	$list = sassy_compass__list($args, ',');
+	$list = $this->sassy_compass__list($args, ',');
 	return new SassNumber(count($list));
 }
 
@@ -229,7 +229,7 @@ function sassy_compass___compass_list_slice($list, $start, $end) {
 	$args = func_get_args();
 	$end = array_pop($args);
 	$start = array_pop($args);
-	$list = sassy_compass__list($args, ',');
+	$list = $this->sassy_compass__list($args, ',');
 	return implode(',', array_slice($list, $start, $end));
 }
 
@@ -246,7 +246,7 @@ function sassy_compass__list($list, $seperator = ',') {
   if (is_array($list)) {
   	$newlist = array();
   	foreach ($list as $listlet) {
-  		$newlist = array_merge($newlist, sassy_compass__list($listlet, $seperator));
+  		$newlist = array_merge($newlist, $this->sassy_compass__list($listlet, $seperator));
   	}
   	$list = implode(', ', $newlist);
   }
@@ -280,11 +280,11 @@ function sassy_compass__list($list, $seperator = ',') {
   }
   $out[] = $stack;
   return $out;
-}<?php
+}
 
 # Check if any of the arguments passed require a vendor prefix.
 function sassy_compass__prefixed($prefix, $list) {
-  $list = sassy_compass__list($list);
+  $list = $this->sassy_compass__list($list);
   $prefix = trim(preg_replace('/[^a-z]/', '', strtolower($prefix)));
 
   # thanks http://www.quirksmode.org/css/contents.html
@@ -313,64 +313,64 @@ function sassy_compass__prefixed($prefix, $list) {
 }
 
 function sassy_compass___webkit($input) {
-  return sassy_compass__prefix('webkit', $input);
+  return $this->sassy_compass__prefix('webkit', $input);
 }
 function sassy_compass___moz($input) {
-  return sassy_compass__prefix('moz', $input);
+  return $this->sassy_compass__prefix('moz', $input);
 }
 function sassy_compass___o($input) {
-  return sassy_compass__prefix('o', $input);
+  return $this->sassy_compass__prefix('o', $input);
 }
 function sassy_compass___ms($input) {
-  return sassy_compass__prefix('ms', $input);
+  return $this->sassy_compass__prefix('ms', $input);
 }
 function sassy_compass___svg($input) {
-  return sassy_compass__prefix('ms', $input);
+  return $this->sassy_compass__prefix('ms', $input);
 }
 function sassy_compass___pie($input) {
-  return sassy_compass__prefix('ms', $input);
+  return $this->sassy_compass__prefix('ms', $input);
 }
 function sassy_compass___css2($input) {
-  return sassy_compass__prefix('ms', $input);
+  return $this->sassy_compass__prefix('ms', $input);
 }
 function sassy_compass___owg($input) {
-  return sassy_compass__prefix('ms', $input);
+  return $this->sassy_compass__prefix('ms', $input);
 }
 function sassy_compass__prefix($vendor, $input) {
   if (is_object($vendor)) {
     $vendor = $vendor->value;
   }
 
-  $list = sassy_compass__list($input, ',');
+  $list = $this->sassy_compass__list($input, ',');
   $output = '';
   foreach($list as $key=>$value) {
     $list[$key] = '-' . $vendor . '-' . $value;
   }
   return new SassString(implode(', ', $list));
-}<?php
+}
 
 function sassy_compass__image_width($file) {
-  if ($info = sassy_compass__image_info($file)) {
+  if ($info = $this->sassy_compass__image_info($file)) {
     return new SassNumber($info[0] . 'px');
   }
   return new SassNumber('0px');
 }
 
 function sassy_compass__image_height($file) {
-  if ($info = sassy_compass__image_info($file)) {
+  if ($info = $this->sassy_compass__image_info($file)) {
     return new SassNumber($info[1] . 'px');
   }
   return new SassNumber('0px');  
 }
 
 function sassy_compass__image_info($file) {
-  if ($path = sassy_compass__resolve_path($file)) {
+  if ($path = $this->sassy_compass__resolve_path($file)) {
     if ($info = getimagesize($path)) {
       return $info;
     }
   }
   return false; 
-}<?php
+}
 
 // http://compass-style.org/reference/compass/helpers/selectors/#nest
 function sassy_compass__nest() {
@@ -418,20 +418,20 @@ function sassy_compass__headers($from = false, $to = false) {
 		$output[] = 'h' . $i;
 	}
 	return new SassString(implode(', ', $output));
-}<?php
+}
 
 # not sure what should happen with these
 
 function sassy_compass__stylesheet_url($path, $only_path = FALSE) {
-	return sassy_compass__url($path, $only_path);
+	return $this->sassy_compass__url($path, $only_path);
 }
 
 function sassy_compass__font_url($path, $only_path = FALSE) {
-	return sassy_compass__url($path, $only_path);
+	return $this->sassy_compass__url($path, $only_path);
 }
 
 function sassy_compass__image_url($path, $only_path = FALSE) {
-	return sassy_compass__url($path, $only_path);
+	return $this->sassy_compass__url($path, $only_path);
 }
 
 function sassy_compass__url($path, $only_path = FALSE, $web_path = TRUE) {
@@ -485,7 +485,7 @@ function sassy_compass__elements_of_type($type) {
 }
 
 function sassy_compass__inline_image($file, $mime = NULL) {
-	if ($path = sassy_compass__url($file, true, false)) {
+	if ($path = $this->sassy_compass__url($file, true, false)) {
 		$info = getimagesize($path);
 		$mime = $info['mime'];
 		$data = base64_encode(file_get_contents($path));
@@ -506,7 +506,7 @@ function sassy_compass__inline_font_files($file) {
 	);
 
 	while (count($args)) {
-		$path = sassy_compass__resolve_path(array_shift($args));
+		$path = $this->sassy_compass__resolve_path(array_shift($args));
 		$data = base64_encode(file_get_contents($path));
 		$format = array_shift($args);
 
@@ -545,7 +545,7 @@ function sassy_compass__enumerate($prefix, $from, $to, $sep = NULL) {
 	}
 
 	return new SassString(implode(', ', $output));
-}<?php
+}
 
 function sassy_compass__is_position($position) {
 	if (is_object($position)) {
@@ -557,7 +557,7 @@ function sassy_compass__is_position($position) {
 function sassy_compass__is_position_list($position) {
 	$list = array();
 	foreach (func_get_args() as $pos) {
-		$list = array_merge($list, sassy_compass__list($pos, ' '));
+		$list = array_merge($list, $this->sassy_compass__list($pos, ' '));
 	}
 	foreach ($list as $el) {
 		if (!in_array($el, array('top', 'left', 'bottom', 'right'))) {
@@ -569,7 +569,7 @@ function sassy_compass__is_position_list($position) {
 
 # returns the opposite position of a side or corner.
 function sassy_compass__opposite_position($position) {
-	$list = sassy_compass__list($position, ' ');
+	$list = $this->sassy_compass__list($position, ' ');
 	foreach ($list as $key=>$val) {
 		switch ($val) {
 			case 'top':
@@ -591,7 +591,7 @@ function sassy_compass__opposite_position($position) {
 }
 
 
-# TODO<?php
+# TODO
 
 /**
  * A genericized version of lighten/darken so negative values can be used
@@ -599,7 +599,7 @@ function sassy_compass__opposite_position($position) {
  * @param SassNumber $amount  the value to adjust by
  */
 function sassy_compass__adjust_lightness($color, $amount) {
-	return sassy_compass__adjust_color_value($color, 'lightness', $amount);
+	return $this->sassy_compass__adjust_color_value($color, 'lightness', $amount);
 }
 
 /**
@@ -608,7 +608,7 @@ function sassy_compass__adjust_lightness($color, $amount) {
  * This will never return a pure light or dark color unless the amount is 100%.
  */
 function sassy_compass__scale_lightness($color, $amount) {
-	return sassy_compass__scale_color_value($color, 'lightness', $amount);
+	return $this->sassy_compass__scale_color_value($color, 'lightness', $amount);
 }
 
 /**
@@ -617,7 +617,7 @@ function sassy_compass__scale_lightness($color, $amount) {
  * @param SassNumber $amount  the value to adjust by
  */
 function sassy_compass__adjust_saturation($color, $amount) {
-	return sassy_compass__adjust_color_value($color, 'saturation', $amount);
+	return $this->sassy_compass__adjust_color_value($color, 'saturation', $amount);
 }
 
 /**
@@ -626,7 +626,7 @@ function sassy_compass__adjust_saturation($color, $amount) {
  * This will never return a pure light or dark color unless the amount is 100%.
  */
 function sassy_compass__scale_saturation($color, $amount) {
-	return sassy_compass__scale_color_value($color, 'saturation', $amount);
+	return $this->sassy_compass__scale_color_value($color, 'saturation', $amount);
 }
 
 function sassy_compass__adjust_color_value($color, $attribute, $amount) {
@@ -699,7 +699,7 @@ function sassy_compass__cos($number) {
 
 function sassy_compass__tan($number) {
 	return new SassNumber(sin($number));
-}<?php
+}
 // http://compass-style.org/reference/compass/helpers/font-files/#font-files
 function sassy_compass__font_files() {
   $font_types = array(
