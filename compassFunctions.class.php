@@ -80,7 +80,12 @@ function sassy_compass__resolve_path($file) {
     return $file;
   }
   if (!$path = realpath($file)) {
-    $path = SassScriptFunction::$context->node->token->filename;
+    if( isset( SassScriptFunction::$context->node->token->filename ) ) {
+        $path = SassScriptFunction::$context->node->token->filename;
+    } else {
+        //usefull e.g. for replace-text-with-dimensions (which itself calls for image-width with a path relative to source SCSS file)
+        $path = SassScriptFunction::$context->parent->parent->node->token->filename;
+    }
     $path = substr($path, 0, strrpos($path, '/')) . '/';
     $path = $path . $file;
     $last = '';
